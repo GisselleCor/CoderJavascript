@@ -1,73 +1,111 @@
-/* comentario de 
-    dos líneas*/
+// Función para obtener un número aleatorio dentro de un rango dado
+function getRandomIndex(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+    // Lista de frutas y verduras
+    var frutas = ['Manzana', 'Banana', 'Naranja', 'Pera', 'Uva', 'Kiwi', 'Papaya', 'Mango'];
+    var verduras = ['Zanahoria', 'Lechuga', 'Papa', 'Tomate', 'Cebolla', 'Espinaca', 'Brócoli', 'Pepino'];
 
-//Este es un comentario de una sola línea
 
-// Declarar una variable
-//let nombre; 
+   // Array de carrito de compras
+    var carrito = [];
 
-//Asignar valor a la variable 
-//nombre = "Gisselle";
-
-//Declarar y asignar
-//let apellido = "Cordova";
-
-//Reasignando el valor de una variable
-//apellido = "Diaz";
-
-//const anioNacimiento = 1991;
-
-//string - se utiliza en formato de texto
-//number - el valor es un número, con este formato se pueden hacer operaciones + - / 
-
-//let numero1= 5;
-//let numero2=10;
-//let resultado= 10 -5
-
-//console.log(resultado);
-
-//let nombre1 = "Gisselle";
-//let nombre2 = "Coder";
-
-//let nombreCompleto = nombre1 + nombre2;
-//console.log(nombreCompleto);
-
-// Actividad en clase
-
-//Act 1
-// let nombreIngresado = prompt("Ingrese su nombre");
-// alert("Hola, " + nombreIngresado + ". ¡Bienvenido!");
-// console.log("Hola, " + nombreIngresado + ". ¡Bienvenido!");
-
-//ACT 2 
-// let numeroInterno = 5;
-// let numeroIngresado = parseInt(promt("Ingrese un número"));
-
-// Palabra secreta para adivinar
-const palabraSecreta = "vital";
-let intentos = 3; // Número máximo de intentos permitidos
-
-// Función para verificar la palabra ingresada por el usuario
-function verificarPalabra() {
-    const inputPalabra = document.getElementById("input-palabra").value.toLowerCase();
-    const mensaje = document.getElementById("mensaje");
-
-    if (intentos > 0) {
-        if (inputPalabra === palabraSecreta) {
-            mensaje.textContent = `¡Felicidades! Adivinaste la palabra secreta "${palabraSecreta}".`;
-        } else {
-            mensaje.textContent = "¡Incorrecto! Intenta de nuevo.";
-            intentos--;
-            if (intentos === 0) {
-                mensaje.textContent = `¡Lo siento! Se acabaron los intentos. La palabra secreta era "${palabraSecreta}".`;
-            }
-        }
-    } else {
-        mensaje.textContent = `¡Lo siento! Se acabaron los intentos. La palabra secreta era "${palabraSecreta}".`;
+  // Función para generar un array de productos sin repetir frutas o verduras
+    function generarProductos(numProductos) {
+    var productos = [];
+    var categorias = ['fruta', 'verdura'];
+  
+    for (var i = 0; i < numProductos; i++) {
+      var categoria = categorias[i % 2]; // Alternar entre fruta y verdura
+      var nombre;
+      var precio;
+  
+      // Seleccionar nombre de forma aleatoria de la lista correspondiente
+      if (categoria === 'fruta') {
+        nombre = frutas.splice(getRandomIndex(0, frutas.length), 1)[0];
+      } else {
+        nombre = verduras.splice(getRandomIndex(0, verduras.length), 1)[0];
+      }
+  
+      // Generar un precio aleatorio entre 1 y 10
+      precio = (Math.random() * 10 + 1).toFixed(2);
+  
+      // Crear objeto producto y añadirlo al array
+      var producto = {
+        categoria: categoria,
+        nombre: nombre,
+        precio: parseFloat(precio)
+      };
+  
+      productos.push(producto);
     }
+  
+    return productos;
 }
 
-// Función para terminar el juego
-function terminarJuego() {
-    document.getElementById("mensaje").textContent = "¡Hasta luego!";
+  // Función para agregar un producto al carrito de compras
+    function agregarAlCarrito(index) {
+    
+    var producto = productos[index];
+    var indice = carrito.findIndex(item => item.nombre === producto.nombre);
+    if (indice !== -1) {
+        carrito[indice].cantidad++;
+    } else {
+        producto.cantidad = 1;
+        carrito.push(producto);
+    }
+    mostrarCarrito()
+    calcularTotal() 
 }
+
+
+  // Función para mostrar los productos en el HTML
+    function mostrarProductos() {
+    var productosHTML = '';
+
+    productos.forEach(function(producto, index) {
+        productosHTML += `
+            <div class="producto">
+                <h3>${producto.nombre}</h3>
+                <p>Categoría: ${producto.categoria}</p>
+                <p>Precio: $${producto.precio.toFixed(2)}</p>
+                <button onclick="agregarAlCarrito(${index})">Agregar al Carrito</button>
+            </div>
+        `;
+    });
+
+    document.getElementById('productos').innerHTML = productosHTML;
+}
+
+  // Función para mostrar los productos en el HTML
+    function mostrarCarrito() {
+    var HTML = '';
+
+    carrito.forEach(function(elemento) {
+        HTML += `
+            <li class="elementoCarrito">
+                <h3>${elemento.nombre}</h3>
+                <p>Categoría: ${elemento.categoria}</p>
+                <p>Precio: $${elemento.precio.toFixed(2)}</p>
+                <p>Cantidad: $${elemento.cantidad}</p>
+            </li>
+        `;
+    });
+
+    document.getElementById('lista-carrito').innerHTML = HTML;
+}
+
+// Función para calcular el total de precio del carrito de compras
+function calcularTotal() {
+    var total = 0;
+    carrito.forEach(function (producto) {
+        total += producto.precio * producto.cantidad;
+    });
+    document.getElementById('total-carrito').textContent = "$" + total.toFixed(2);
+}
+
+ // Generar array de productos sin repetir frutas o verduras
+    var productos = generarProductos(5);
+// Llamar a la función mostrarProductos para mostrar los productos al cargar la página
+mostrarProductos();
+

@@ -1,17 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Juego de Adivinanza de Palabras</title>
+    <title>Carrito de Compras</title>
+    <style>
+        /* Estilos opcionales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .producto {
+            margin-bottom: 10px;
+        }
+        button {
+            cursor: pointer;
+        }
+    </style>
+    
 </head>
 <body>
-    <h1>Juego de Adivinanza de Palabras</h1>
-    <p>Intenta adivinar la palabra secreta:</p>
-    <input type="text" id="input-palabra" placeholder="Ingresa una palabra">
-    <button onclick="verificarPalabra()">Adivinar</button>
-    <button onclick="terminarJuego()">Salir</button>
-    <p id="mensaje"></p>
-    <script src="./js/script.js"></script>
+    <h1>Carrito de Compras</h1>
+    <div id="productos">
+        <!-- Aquí se agregarán los productos -->
+    </div>
+    <div id="carrito">
+        <h2>Carrito de Compras</h2>
+        <ul id="lista-carrito">
+            <!-- Aquí se mostrarán los productos en el carrito -->
+        </ul>
+        <p>Total: <span id="total-carrito">$0.00</span></p>
+        <button id="vaciar-carrito">Vaciar Carrito</button>
+    </div>
+    <script src="./js/script.js" ></script>
 </body>
+
 </html>
