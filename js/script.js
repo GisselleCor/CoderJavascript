@@ -1,30 +1,50 @@
+// Variable de carrito de compras
+let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+// Función para obtener productos desde un archivo JSON local
+const obtenerProductosDesdeJSON = async () => {
+    try {
+        const response = await fetch('./public/productos.json');
+        if (!response.ok) {
+            throw new Error('Error al obtener los productos');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
+    }
+};
+
+// Función para generar un array de productos aleatorios
+const generarProductosAleatorios = async numProductos => {
+    try {
+        const productos = await obtenerProductosDesdeJSON();
+        const productosAleatorios = [];
+        const categorias = ['frutas', 'verduras'];
+
+        for (let i = 0; i < numProductos; i++) {
+            const categoria = categorias[i % 2];
+            const indice = getRandomIndex(0, productos[categoria].length);
+            const producto = productos[categoria][indice];
+            const precio = (Math.random() * 10 + 1).toFixed(2);
+            const stock = Math.floor(Math.random() * 10) + 1;
+            const img = 'img/' + producto.nombre.toLowerCase() + '.jpg';
+            productosAleatorios.push({ categoria, ...producto, precio: parseFloat(precio), stock, img });
+        }
+        return productosAleatorios;
+    } catch (error) {
+        console.error('Error al generar productos aleatorios:', error);
+        return [];
+    }
+};
+
 // Función para obtener un número aleatorio dentro de un rango dado
 const getRandomIndex = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
 // Lista de frutas y verduras
 const frutas = ['Manzana', 'Banana', 'Naranja', 'Pera', 'Uva', 'Kiwi', 'Papaya', 'Mango'];
 const verduras = ['Zanahoria', 'Lechuga', 'Papa', 'Tomate', 'Cebolla', 'Espinaca', 'Brócoli', 'Pepino'];
-
-// Array de carrito de compras
-let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-
-// Función para generar un array de productos sin repetir frutas o verduras
-const generarProductos = numProductos => {
-    const productos = [];
-    const categorias = ['fruta', 'verdura'];
-
-    for (let i = 0; i < numProductos; i++) {
-        const categoria = categorias[i % 2];
-        // Alternar entre fruta y verdura
-        // Se utiliza el operador ternario para seleccionar el nombre de forma aleatoria de la lista correspondiente
-        const nombre = (categoria === 'fruta') ? frutas.splice(getRandomIndex(0, frutas.length), 1)[0] : verduras.splice(getRandomIndex(0, verduras.length), 1)[0];
-        const precio = (Math.random() * 10 + 1).toFixed(2);
-        const stock = Math.floor(Math.random() * 10) + 1; // Generar un stock aleatorio entre 1 y 10
-        const producto = { categoria, nombre, precio: parseFloat(precio), stock };
-        productos.push(producto);
-    }
-    return productos;
-};
 
 // Función para agregar un producto al carrito de compras
 const agregarAlCarrito = index => {
@@ -35,6 +55,15 @@ const agregarAlCarrito = index => {
     actualizarCarritoEnStorage();
     mostrarCarrito();
     calcularTotal();
+
+    // Integración de Sweet Alert dentro de la función agregarAlCarrito
+    Swal.fire({
+        icon: 'success',
+        title: '¡Producto agregado!',
+        text: `${producto.nombre} ha sido agregado al carrito.`,
+        showConfirmButton: false,
+        timer: 1500
+    });
 };
 
 // Función para mostrar los productos en el HTML
@@ -45,6 +74,7 @@ const mostrarProductos = () => {
         productoElement.classList.add('producto');
         productoElement.innerHTML = `
             <h3>${producto.nombre}</h3>
+            <img src="${producto.img}" alt="${producto.nombre}">
             <p>Categoría: ${producto.categoria}</p>
             <p>Precio: $${producto.precio.toFixed(2)}</p>
             <p>Stock: ${producto.stock}</p>
@@ -99,20 +129,44 @@ const consultarStock = nombre => {
     }
 };
 
-// Generar array de productos sin repetir frutas o verduras
-const productos = generarProductos(5);
-
 // Llamar a la función mostrarProductos para mostrar los productos al cargar la página
-mostrarProductos();
-mostrarCarrito();
-calcularTotal();
+(async () => {
+    productos = await generarProductosAleatorios(16);
+    mostrarProductos();
+    mostrarCarrito();
+    calcularTotal();
+})();
+
+// Función para mostrar un Sweet Alert de confirmación antes de vaciar el carrito
+const confirmarVaciarCarrito = () => {
+    Swal.fire({
+        icon: 'warning',
+        title: '¿Estás seguro?',
+        text: 'Esto vaciará tu carrito de compras',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, vaciar carrito',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            vaciarCarrito();
+            Swal.fire(
+                '¡Carrito vaciado!',
+                'Tu carrito de compras ha sido vaciado correctamente.',
+                'success'
+            );
+        }
+    });
+};
 
 // Función para vaciar el carrito de compras
 const vaciarCarrito = () => {
     carrito = []; // Vaciar el arreglo del carrito
     actualizarCarritoEnStorage(); // Actualizar el almacenamiento local
     mostrarCarrito(); // Mostrar el carrito actualizado (vacío)
-    calcularTotal(); // Recalcular el total (que ahora será $0.00)
+    calcularTotal(); // Recalcular el total 
+    ; // Recalcular el total (que ahora será $0.00)
 };
 
 // Agregar event listener al botón "Vaciar Carrito"
