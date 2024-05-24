@@ -1,14 +1,17 @@
 // Variable de carrito de compras
 let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
+
 // Función para obtener productos desde un archivo JSON local
 const obtenerProductosDesdeJSON = async () => {
     try {
-        const response = await fetch('./public/productos.json');
+        const response = await fetch('http://127.0.0.1:5500/public/productos.json');
         if (!response.ok) {
             throw new Error('Error al obtener los productos');
         }
         const data = await response.json();
+        console.log('productosJSON')
+        console.log(data)
         return data;
     } catch (error) {
         console.error('Error:', error);
@@ -27,10 +30,11 @@ const generarProductosAleatorios = async numProductos => {
             const categoria = categorias[i % 2];
             const indice = getRandomIndex(0, productos[categoria].length);
             const producto = productos[categoria][indice];
+            console.log(producto)
             const precio = (Math.random() * 10 + 1).toFixed(2);
             const stock = Math.floor(Math.random() * 10) + 1;
-            const img = 'img/' + producto.nombre.toLowerCase() + '.jpg';
-            productosAleatorios.push({ categoria, ...producto, precio: parseFloat(precio), stock, img });
+            const img = 'img/' + producto.toLowerCase() + '.jpg';
+            productosAleatorios.push({ categoria, nombre:producto, precio: parseFloat(precio), stock, img });
         }
         return productosAleatorios;
     } catch (error) {
@@ -43,8 +47,8 @@ const generarProductosAleatorios = async numProductos => {
 const getRandomIndex = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
 // Lista de frutas y verduras
-const frutas = ['Manzana', 'Banana', 'Naranja', 'Pera', 'Uva', 'Kiwi', 'Papaya', 'Mango'];
-const verduras = ['Zanahoria', 'Lechuga', 'Papa', 'Tomate', 'Cebolla', 'Espinaca', 'Brócoli', 'Pepino'];
+//const frutas = ['Manzana', 'Banana', 'Naranja', 'Pera', 'Uva', 'Kiwi', 'Papaya', 'Mango'];
+//const verduras = ['Zanahoria', 'Lechuga', 'Papa', 'Tomate', 'Cebolla', 'Espinaca', 'Brócoli', 'Pepino'];
 
 // Función para agregar un producto al carrito de compras
 const agregarAlCarrito = index => {
@@ -70,6 +74,7 @@ const agregarAlCarrito = index => {
 const mostrarProductos = () => {
     const productosContainer = document.getElementById('productos');
     productos.forEach((producto, index) => {
+        console.log(producto)
         const productoElement = document.createElement('div');
         productoElement.classList.add('producto');
         productoElement.innerHTML = `
@@ -131,7 +136,7 @@ const consultarStock = nombre => {
 
 // Llamar a la función mostrarProductos para mostrar los productos al cargar la página
 (async () => {
-    productos = await generarProductosAleatorios(16);
+    productos = await obtenerProductosDesdeJSON();
     mostrarProductos();
     mostrarCarrito();
     calcularTotal();

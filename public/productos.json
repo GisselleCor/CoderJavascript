@@ -1,4 +1,114 @@
-{
-    "fruta": ["Manzana", "Banana", "Naranja", "Pera", "Uva", "Kiwi", "Papaya", "Mango"],
-    "verdura": ["Zanahoria", "Lechuga", "Papa", "Tomate", "Cebolla", "Espinaca", "Brócoli", "Pepino"]
-}
+[
+    {
+        "categoria": "frutas",
+        "nombre": "Manzana",
+        "precio": 500,
+        "img": "img/manzana.jpg",
+        "stock": 7
+    },
+    {
+        "categoria": "frutas",
+        "nombre": "Banana",
+        "precio": 300,
+        "img": "img/banana.jpg",
+        "stock": 3
+    },
+    {
+        "categoria": "frutas",
+        "nombre": "Naranja",
+        "precio": 400,
+        "img": "img/naranja.jpg",
+        "stock": 6
+    },
+    {
+        "categoria": "frutas",
+        "nombre": "Pera",
+        "precio": 600,
+        "img": "img/pera.jpg",
+        "stock": 9
+    },
+    {
+        "categoria": "frutas",
+        "nombre": "Uva",
+        "precio": 800,
+        "img": "img/uva.jpg",
+        "stock": 4
+    },
+    {
+        "categoria": "frutas",
+        "nombre": "Kiwi",
+        "precio": 700,
+        "img": "img/kiwi.jpg",
+        "stock": 5
+    },
+    {
+        "categoria": "frutas",
+        "nombre": "Papaya",
+        "precio": 1000,
+        "img": "img/papaya.jpg",
+        "stock": 2
+    },
+    {
+        "categoria": "frutas",
+        "nombre": "Mango",
+        "precio": 1200,
+        "img": "img/mango.jpg",
+        "stock": 8
+    },
+    {
+        "categoria": "verduras",
+        "nombre": "Zanahoria",
+        "precio": 200,
+        "img": "img/zanahoria.jpg",
+        "stock": 6
+    },
+    {
+        "categoria": "verduras",
+        "nombre": "Lechuga",
+        "precio": 250,
+        "img": "img/lechuga.jpg",
+        "stock": 9
+    },
+    {
+        "categoria": "verduras",
+        "nombre": "Papa",
+        "precio": 300,
+        "img": "img/papa.jpg",
+        "stock": 1
+    },
+    {
+        "categoria": "verduras",
+        "nombre": "Tomate",
+        "precio": 350,
+        "img": "img/tomate.jpg",
+        "stock": 5
+    },
+    {
+        "categoria": "verduras",
+        "nombre": "Cebolla",
+        "precio": 150,
+        "img": "img/cebolla.jpg",
+        "stock": 3
+    },
+    {
+        "categoria": "verduras",
+        "nombre": "Espinaca",
+        "precio": 400,
+        "img": "img/espinaca.jpg",
+        "stock": 10
+    },
+    {
+        "categoria": "verduras",
+        "nombre": "Brócoli",
+        "precio": 600,
+        "img": "img/brócoli.jpg",
+        "stock": 8
+    },
+    {
+        "categoria": "verduras",
+        "nombre": "Pepino",
+        "precio": 200,
+        "img": "img/pepino.jpg",
+        "stock": 7
+    }
+]

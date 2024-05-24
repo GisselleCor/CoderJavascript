@@ -16,7 +16,7 @@ body {
     font-weight: bold;
     color: #0a67be;
     text-transform: uppercase; 
-    z-index: 1000
+    z-index: 1000;
     }
 
     #logo {
@@ -43,7 +43,7 @@ h1 {
 #productos {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ancho mínimo de 200px */
-    gap: 20px;
+    gap: 20px;;
 }
 
 /* Estilos para cada producto */
@@ -81,8 +81,8 @@ h1 {
 }
 
 img {
-    width: 200px;
-    height: 200px;
+    width: 140px;
+    height: 140px;
 }
 
 /* Estilos para el carrito de compras */
